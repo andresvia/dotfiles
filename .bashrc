@@ -115,3 +115,14 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# go
+export GOPATH=~
+
+# editor
+export EDITOR=vim
+
+# vagrant
+if [[ "$(uname -s)" == "Linux" ]]; then
+  export VAGRANT_DEFAULT_PROVIDER=libvirt
+fi
