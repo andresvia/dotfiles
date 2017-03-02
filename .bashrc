@@ -120,9 +120,26 @@ fi
 export GOPATH=~
 
 # editor
-export EDITOR=vim
+export EDITOR=/usr/bin/vim
 
 # vagrant
 if [[ "$(uname -s)" == "Linux" ]]; then
   export VAGRANT_DEFAULT_PROVIDER=libvirt
 fi
+
+# atom
+alias vim=atom
+
+# gimme
+export GIMME_GO_VERSION=1.8
+eval "$(gimme)"
+
+# rbenv
+eval "$(rbenv init -)"
+
+# pyenv
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+# cleanup duplicates in $PATH
+clean_path
