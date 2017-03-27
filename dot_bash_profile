@@ -48,6 +48,15 @@ clean_path() {
 }
 
 # last wins
+swift_bins="/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/bin"
+if [ -d "$swift_bins" ]; then
+  add_to_path "$swift_bins"
+fi
+swift_bins="/Library/Developer/CommandLineTools/Library/PrivateFrameworks/LLDB.framework/Versions/A/Resources"
+if [ -d "$swift_bins" ]; then
+  add_to_path "$swift_bins"
+fi
+unset swift_bins
 add_to_path "$HOME/bin"
 add_to_path "$HOME/.rbenv/bin"
 add_to_path "$HOME/.pyenv/bin"
@@ -59,6 +68,6 @@ export PATH
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
     if [ -f "$HOME/.bashrc" ]; then
-	. "$HOME/.bashrc"
+      . "$HOME/.bashrc"
     fi
 fi
