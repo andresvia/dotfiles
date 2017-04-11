@@ -27,9 +27,9 @@ add_to_path() {
 }
 
 clean_path() {
-  paths=(${PATH//:/ })
-  clean_path="${paths[0]}"
   IFS=:
+  paths=(${PATH})
+  clean_path="${paths[0]}"
   for path in $PATH; do
     found=no
     for cleaned_path in $clean_path; do
