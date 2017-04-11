@@ -117,6 +117,10 @@ eval "$(rbenv init -)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
+# nvm
+export NVM_DIR="${HOME}/.nvm"
+source "${NVM_DIR}/nvm.sh"
+
 # ssh
 ssh-add ~/.ssh/*.pem &> /dev/null
 
