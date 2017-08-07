@@ -56,7 +56,39 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+function parent_search_file() {
+  local file="${1}"
+  local prefix="${2}"
+  local cmnd="${3}"
+  local path="$(PWD)"
+  local content=""
+  while true; do
+    if [ -r "${path}/${file}" ] || [ "${path}" = '/' ] || [ "${path}" = '.' ] || [ "${path}" = '..' ] || [ -z "${path}" ]; then
+      break
+    fi
+    newpath="$(dirname "${path}")"
+    if [ "${newpath}" == "${path}" ]; then
+      break
+    fi
+    path="${newpath}"
+  done
+  if [ -r "${path}/${file}" ]; then
+    content="$(< "${path}/${file}")"
+    if [ -n "${cmnd}" ]; then
+      eval "${cmnd}"
+    elif [ -n "${content}" ]; then
+      echo "# ${prefix}: ${content}"
+    fi
+  fi
+}
+
+function prompt() {
+  parent_search_file .git/HEAD "" "git -c color.status=always status --porcelain=2 --branch | egrep '^# branch' ; git -c color.status=always status -s | sed 's|^|# |'"
+  parent_search_file .terraform/environment te ""
+}
+
 PS1='\n# w: \w\n'
+PROMPT_COMMAND="prompt"
 
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -124,6 +156,9 @@ source "${NVM_DIR}/nvm.sh"
 # ssh
 ssh-add ~/.ssh/*.pem &> /dev/null
 
+# secrets
+[ -r ~/.secrets ] || source ~/.secrets
+
 # google-cloud-sdk
 if [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc ]; then
   . /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc
@@ -137,4 +172,6 @@ export SDKMAN_DIR="${HOME}/.sdkman"
 source "${SDKMAN_DIR}/bin/sdkman-init.sh"
 
 # cleanup duplicates in $PATH
-clean_path
+if type clean_path &>/dev/null; then
+  clean_path
+fi

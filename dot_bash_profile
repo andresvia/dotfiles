@@ -62,6 +62,9 @@ add_to_path "$HOME/.rbenv/bin"
 add_to_path "$HOME/.pyenv/bin"
 add_to_path "$HOME/.local/bin"
 
+source /usr/local/etc/bash_completion
+source <(kubectl completion bash)
+
 export PATH
 
 # if running bash
